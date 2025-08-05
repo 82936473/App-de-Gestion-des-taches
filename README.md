@@ -8,6 +8,7 @@ Elle fonctionne entièrement dans le terminal et stocke les données localement 
 ## 🚀 Fonctionnalités : 
 
 - 🔐 **Création de compte** avec mot de passe.
+- 🔐 **Chiffrement** du mot de passe.
 - 🔑 **Connexion sécurisée** avec vérification du mot de passe.
 - 📋 **Ajout de tâches** multiples.
 - 👀 **Affichage des tâches**.
@@ -28,7 +29,6 @@ Elle fonctionne entièrement dans le terminal et stocke les données localement 
 ---
  
 ## 📚 À améliorer : 
- * 🔒 Chiffrement du mot de passe.
  * 📁 Sauvegarde dans un format JSON ou base de données.
  * 🧪 Ajout de tests unitaires.
  * 🎨 Interface graphique (GUI) avec Tkinter ou autre.

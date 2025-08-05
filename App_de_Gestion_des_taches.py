@@ -1,3 +1,4 @@
+import ast
 import os
 import time
 t=time
@@ -14,11 +15,13 @@ def codde():
          veerification = input('Verifier le mot de passe : ')
          if veerification==code:
             os.makedirs(nom_utili)
-            open(os.path.join(nom_utili,'perso_infos'),'w')
-            open(os.path.join(nom_utili,'taches'),'w')
-            open(os.path.join(nom_utili,'corbeille'),'w')
-            with open(f"{nom_utili}/perso_infos",'r+') as f:
-                f.write(code)
+            open(os.path.join(nom_utili,'perso_infos.txt'),'w')
+            open(os.path.join(nom_utili,'taches.txt'),'w')
+            open(os.path.join(nom_utili,'corbeille.txt'),'w')
+            archi(code)
+            with open(f"{nom_utili}/perso_infos.txt",'r+') as f:
+                for i in liste:
+                    f.write(str(i) + '\n')
             print('Compte enregistre👍.')  
             print("...")
             t.sleep(1.5)
@@ -27,6 +30,59 @@ def codde():
          else:
             print('mot de passe incorrect ')
             codde()
+
+def archi(code):
+    global liste
+    liste=[]
+    for i in code:
+        liste.append(i)
+
+    for ind,i in enumerate(liste):
+        i=ord(i)
+        liste1=[]
+        while True:
+            if i==1:
+                liste1.reverse()
+                liste[ind]=liste1
+                break
+            if i%2==0:
+                i/=2
+                liste1.append('P')
+            else:
+                i=i*3+1
+                liste1.append('I')
+
+    for current in liste:
+        for i in current:
+            a=0
+            while a<len(current)-1:
+                if 'P' in current[a] and current[a+1] =='P':
+                    current[a]=current[a]+current.pop(a+1)
+                else:
+                    a+=1
+
+    for current in liste:
+        for ind,i in enumerate(current):
+            if len(i)>1:
+                current[ind]=str(len(i))+'P'
+            else:
+                pass
+def desarchi(liste1):
+    global chiffree
+    chiffree=[]
+    for val in liste1:
+        chiffre=1
+        for i in val:
+            if i=='P':
+                chiffre=chiffre*2
+            elif len(i)>1 :
+                chiffre=chiffre*2**int(i[:-1])
+            else:
+                chiffre=(chiffre-1)//3
+        chiffree.append(chiffre)
+    for ind,i in enumerate(chiffree):
+            chiffree[ind]=chr(i)
+    chiffree=''.join(chiffree)
 def start():
     global alre_code, alre_nom_utili,nom_utili 
 
@@ -49,19 +105,25 @@ def start():
         alre_nom_utili = input("Entrer votre nom d'utilisateur : ")
         alre_code = input("Mot de passe : ")
         if os.path.isdir(alre_nom_utili) :
-            with open(f"{alre_nom_utili}/perso_infos",'r+') as f:
-                line=f.readline()
-                if alre_code==line:
-                    print('Entree reussi👍.')
-                    print('...')
-                    t.sleep(1)
-                    clear()
-                    general()
-                else:
-                    print("Mot de passe incorrect.")
-                    t.sleep(0.5)
-                    clear()
-                    start()
+            liste1=[]
+            with open(f"{alre_nom_utili}/perso_infos.txt",'r+') as f:
+                for line in f:
+                    liste1.append(line.strip())
+                for j,i in enumerate(liste1):
+                    liste1[j]=ast.literal_eval(i)
+                desarchi(liste1)
+            if alre_code==chiffree:
+                nom_utili=alre_nom_utili
+                print('Entree reussi👍.')
+                print('...')
+                t.sleep(1)
+                clear()
+                general()
+            else:
+                print("Mot de passe incorrect.")
+                t.sleep(0.5)
+                clear()
+                start()
 
         else:
             print("Nom d'utilisateur ou mot de passe incorrect.")
@@ -87,7 +149,7 @@ def menu():
     print("(5) Quitter.")
 def voir():
     clear()
-    if os.path.getsize(f"{nom_utili}/taches")==0:
+    if os.path.getsize(f"{nom_utili}/taches.txt")==0:
         print("Vous n'avez pas de taches.")
         print("...")
         t.sleep(1.5)
@@ -95,7 +157,7 @@ def voir():
         general()
     else:
         print("\nVotre taches :")
-        with open(f"{nom_utili}/taches",'r+') as f:
+        with open(f"{nom_utili}/taches.txt",'r+') as f:
             lines=f.readlines()
             for ind,i in enumerate(lines,1):
                 print(f"{ind} : {i}")
@@ -111,7 +173,7 @@ def ajouter():
                     t.sleep(1)
                     clear()
                     break
-                with open(f"{nom_utili}/taches",'r+') as f:
+                with open(f"{nom_utili}/taches.txt",'r+') as f:
                     for i in taches:
                         f.write(i+'\n')
                 print("les taches sont ajoutees avec succèes")
@@ -123,7 +185,7 @@ def ajouter():
             taches.append(tache)
 def supprimer():
     voir()
-    with open(f"{nom_utili}/taches",'r+') as f:
+    with open(f"{nom_utili}/taches.txt",'r+') as f:
         lines=f.readlines()
     try:
         index = input("choisir l'incide du tache a supprimer, ou entrer 'N' pour anuler : ")
@@ -135,10 +197,10 @@ def supprimer():
             index_int=int(index)
             index_int-=1
             supp=lines.pop(index_int)
-            with open(f"{nom_utili}/taches",'w+') as f:
+            with open(f"{nom_utili}/taches.txt",'w+') as f:
                 for i in lines:
                     f.write(i)
-            with open(f"{nom_utili}/corbeille",'r+') as f:
+            with open(f"{nom_utili}/corbeille.txt",'r+') as f:
                 f.seek(0,2)
                 f.write(supp)
             print(f"la tache {index} est supprimer")
@@ -150,13 +212,13 @@ def supprimer():
         supprimer()
 def courbeille():
     clear()
-    if  os.path.getsize(f"{nom_utili}/corbeille")==0:
+    if  os.path.getsize(f"{nom_utili}/corbeille.txt")==0:
         print(" la courbeille est vide.")
         t.sleep(0.5)
         clear()
         general()
     print("Les taches recement supprimer : ")
-    with open(f"{nom_utili}/corbeille",'r+') as f:
+    with open(f"{nom_utili}/corbeille.txt",'r+') as f:
         lines=f.readlines()
     for indice,i in enumerate(lines,1):
         if i !=0:
@@ -176,7 +238,7 @@ def courbeille():
             choi_def=input("cette tache sera supprimer definitivement, Etes vous sure(O/N) :")
             if choi_def.lower()=='o' or choi_def=='0':
                 lines.pop(index_int)
-                with open(f"{nom_utili}/corbeille",'w+') as f:
+                with open(f"{nom_utili}/corbeille.txt",'w+') as f:
                     for i in lines:
                         f.write(i)
                 print("👍")
@@ -191,10 +253,10 @@ def courbeille():
                 print("choix invalide.")
                 courbeille()
         elif choix=='2':
-            with open(f"{nom_utili}/taches",'a+') as f:
+            with open(f"{nom_utili}/taches.txt",'a+') as f:
                 f.write(lines[index_int])
             lines.pop(index_int)
-            with open(f"{nom_utili}/corbeille",'w+') as f:
+            with open(f"{nom_utili}/corbeille.txt",'w+') as f:
                 for i in lines:
                     f.write(i)
             print('👍')
