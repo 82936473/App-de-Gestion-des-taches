@@ -173,7 +173,7 @@ def ajouter():
                     t.sleep(1)
                     clear()
                     break
-                with open(f"{nom_utili}/taches.txt",'r+') as f:
+                with open(f"{nom_utili}/taches.txt",'a+') as f:
                     for i in taches:
                         f.write(i+'\n')
                 print("les taches sont ajoutees avec succèes")
@@ -200,7 +200,7 @@ def supprimer():
             with open(f"{nom_utili}/taches.txt",'w+') as f:
                 for i in lines:
                     f.write(i)
-            with open(f"{nom_utili}/corbeille.txt",'r+') as f:
+            with open(f"{nom_utili}/corbeille.txt",'a+') as f:
                 f.seek(0,2)
                 f.write(supp)
             print(f"la tache {index} est supprimer")
