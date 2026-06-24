@@ -1,3 +1,4 @@
+from datetime import date
 import ast
 import os
 import time
@@ -9,6 +10,7 @@ def clear():
     system('cls' if name == 'nt' else 'clear')
     print('\n', f"{" <'TACHER'> ":-^50}")
 clear()
+#! Creating a Password and create a account file 
 def codde():
          global code
          code = input("Creer un mot de passe : ")
@@ -31,6 +33,7 @@ def codde():
             print('mot de passe incorrect ')
             codde()
 
+#! Encrypt the password (Not recommed We should change it)
 def archi(code):
     global liste
     liste=[]
@@ -67,6 +70,7 @@ def archi(code):
                 current[ind]=str(len(i))+'P'
             else:
                 pass
+#! decipher the password (also we should change it)
 def desarchi(liste1):
     global chiffree
     chiffree=[]
@@ -83,6 +87,8 @@ def desarchi(liste1):
     for ind,i in enumerate(chiffree):
             chiffree[ind]=chr(i)
     chiffree=''.join(chiffree)
+
+#! Creating new account or log in
 def start():
     global alre_code, alre_nom_utili,nom_utili 
 
@@ -147,6 +153,8 @@ def menu():
     print("(3) Supprimer une tache.")
     print("(4) La corbeille.")
     print("(5) Quitter.")
+
+#! view the current tasks
 def voir():
     clear()
     if os.path.getsize(f"{nom_utili}/taches.txt")==0:
@@ -161,28 +169,48 @@ def voir():
             lines=f.readlines()
             for ind,i in enumerate(lines,1):
                 print(f"{ind} : {i}")
-                t.sleep(0.4)                
+                t.sleep(0.4)
+
+#! Add new tasks and their priority. (We should transform the priority to english later.)
 def ajouter():
         print("Entrer vos taches, cliquer entrer pour passer a la tache suivante entrer 'Fin' pour finir l'ajout de taches.")
         taches=[]
+        pr='\n1. elevée\n2. Moyenne\n3. Faible'
         while True:
-            tache = input(" >>> ")
-            if tache.lower()=='fin':
+            tache={'task':None,'priority':None}
+            task = input("Tache >>> ")
+            if task.lower()=='fin':
                 if not taches:
-                    print('aucun tache ajouter')
+                    print('aucun tache ajoutée')
                     t.sleep(1)
                     clear()
                     break
                 with open(f"{nom_utili}/taches.txt",'a+') as f:
                     for i in taches:
-                        f.write(i+'\n')
+                        f.write(f"[{i['priority']}] - {i['task']} - {date.today()}\n")
                 print("les taches sont ajoutees avec succèes")
 
                 print('...')
                 t.sleep(1)
                 clear()
                 general()
+            while True:
+                priority=input(f"Choisir une option: {pr}\n>>> ")
+                if priority=='1':
+                    tache['priority']='Elevée'
+                    break
+                elif priority=='2':
+                    tache['priority']='Moyenne'
+                    break
+                elif priority=='3':
+                    tache['priority']='Faible'
+                    break
+                else:
+                    print('Invalid Choix')
+                    t.sleep(1)
+            tache['task']=task
             taches.append(tache)
+#! remove tasks
 def supprimer():
     voir()
     with open(f"{nom_utili}/taches.txt",'r+') as f:
@@ -210,10 +238,11 @@ def supprimer():
         print("Invalide entre, veuillez entrer un indice existant")
         t.sleep(2)
         supprimer()
-def courbeille():
+#! View The trash
+def corbeille():
     clear()
     if  os.path.getsize(f"{nom_utili}/corbeille.txt")==0:
-        print(" la courbeille est vide.")
+        print(" la corbeille est vide.")
         t.sleep(0.5)
         clear()
         general()
@@ -251,7 +280,7 @@ def courbeille():
                 general()
             else:
                 print("choix invalide.")
-                courbeille()
+                corbeille()
         elif choix=='2':
             with open(f"{nom_utili}/taches.txt",'a+') as f:
                 f.write(lines[index_int])
@@ -266,9 +295,9 @@ def courbeille():
         print("Choix invalide.")
         t.sleep(0.4)
         clear()
-        courbeille()
+        corbeille()
 
-
+#! the main function
 def general():
     while True:
         print("\nchoisir une option : " )
@@ -283,7 +312,7 @@ def general():
         elif choix == '3':
             supprimer()
         elif choix == '4':
-            courbeille()
+            corbeille()
         elif choix == '5':
             clear()
             start()

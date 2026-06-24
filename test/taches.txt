@@ -1,0 +1,5 @@
+t2 : Elevée
+t4 : Moyenne
+t4:low
+[Moyenne] - t1 - 2026-06-24
+[Faible] - t3 - 2026-06-24
