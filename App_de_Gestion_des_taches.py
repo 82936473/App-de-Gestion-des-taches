@@ -13,24 +13,24 @@ clear()
 #! Creating a Password and create a account file 
 def codde():
          global code
-         code = input("Creer un mot de passe : ")
-         veerification = input('Verifier le mot de passe : ')
+         code = input("create a password : ")
+         veerification = input('verify it : ')
          if veerification==code:
             os.makedirs(nom_utili)
             open(os.path.join(nom_utili,'perso_infos.txt'),'w')
-            open(os.path.join(nom_utili,'taches.txt'),'w')
-            open(os.path.join(nom_utili,'corbeille.txt'),'w')
+            open(os.path.join(nom_utili,'taches.csv'),'w')
+            open(os.path.join(nom_utili,'corbeille.csv'),'w')
             archi(code)
             with open(f"{nom_utili}/perso_infos.txt",'r+') as f:
                 for i in liste:
                     f.write(str(i) + '\n')
-            print('Compte enregistre👍.')  
+            print('sign up success.')  
             print("...")
             t.sleep(1.5)
             clear()
             start()
          else:
-            print('mot de passe incorrect ')
+            print('wrong password.')
             codde()
 
 #! Encrypt the password (Not recommed We should change it)
@@ -92,11 +92,11 @@ def desarchi(liste1):
 def start():
     global alre_code, alre_nom_utili,nom_utili 
 
-    choic_input = input("\nTu veux creer un nouveau compte (1) ou vous avez deja un (2)? ")
+    choic_input = input(">>> ")
 
-    if choic_input == "1":
+    if choic_input == "sign up":
         while True:
-            nom_utili = input("Entrer un nom d'utilisateur : ")
+            nom_utili = input("user name: ")
             if os.path.exists(nom_utili):
                 print("ce nom d'utilisateur est deja existant. Veuillez saisir un autre.")
                 print('...')
@@ -106,10 +106,10 @@ def start():
             else:
                 codde() 
 
-    elif choic_input == "2":
-        print('----Connexion----')
-        alre_nom_utili = input("Entrer votre nom d'utilisateur : ")
-        alre_code = input("Mot de passe : ")
+    elif choic_input == "sign in":
+        print('---- Signing ----')
+        alre_nom_utili = input("user name : ")
+        alre_code = input("Password : ")
         if os.path.isdir(alre_nom_utili) :
             liste1=[]
             with open(f"{alre_nom_utili}/perso_infos.txt",'r+') as f:
@@ -120,205 +120,244 @@ def start():
                 desarchi(liste1)
             if alre_code==chiffree:
                 nom_utili=alre_nom_utili
-                print('Entree reussi👍.')
+                print('Success.')
                 print('...')
                 t.sleep(1)
                 clear()
                 general()
             else:
-                print("Mot de passe incorrect.")
+                print("user name or password is not correct.")
                 t.sleep(0.5)
                 clear()
                 start()
 
         else:
-            print("Nom d'utilisateur ou mot de passe incorrect.")
+            print("user name or password is not correct.")
             t.sleep(1)
             clear()
             start()
-    else:
-        print("Choix invalide.")
-        print('...')
-        t.sleep(1)
+    elif choic_input=='help':
+        help_()
+        start()
+    elif choic_input=='cls':
         clear()
+    else:
+        print("invalid input, you should sign in or sign up first. try 'help' to get help")
+        print('...')
         start()
 
 
 #! la deuxieme tache du code:👇
 
+def help_():
+    print(''' These are all the commands used in various situations: 
+        Before starting:
+            sign up         create an account
+            sign in         sign in to an existing account
+            (The user name and the password can't change currently)   #!#!#!
+        In the dashboard (after signing):
+            add tasks       to create more tasks
+                accepted priority types        hight,medium,low
+                stop                           stop adding tasks 
+            delete task
+            recycle bin     enter the recycle bin to delete permanently tasks (use 'delete') or to restore them (use 'restore')
+            cls             to clear the terminal
+            clear           to clear all tasks
+            exit            log out from thee account or to cancel any action
+            ''')
 
-def menu():
-    print("(1) Voir tes taches.")
-    print("(2) Ajouter une tache.")
-    print("(3) Supprimer une tache.")
-    print("(4) La corbeille.")
-    print("(5) Quitter.")
 
 #! view the current tasks
 def voir():
     clear()
     if os.path.getsize(f"{nom_utili}/taches.txt")==0:
-        print("Vous n'avez pas de taches.")
+        print("No active tasks.")
         print("...")
         t.sleep(1.5)
         clear()
         general()
     else:
-        print("\nVotre taches :")
-        with open(f"{nom_utili}/taches.txt",'r+') as f:
+        print("Your tasks :")
+        priority=['Hight:','Medium:','Low:']
+        with open(f"{nom_utili}/taches.csv",'r+') as f:
             lines=f.readlines()
-            for ind,i in enumerate(lines,1):
-                print(f"{ind} : {i}")
-                t.sleep(0.4)
-
+            classing=[[],[],[]]
+            for i in lines:
+                i=i.split(',')
+                if i[0]=='Hight':
+                    classing[0].append(f" {i[1].replace('$#%^',',')} - {i[2]}")
+                elif i[0]=='Medium':
+                    classing[1].append(f" {i[1].replace('$#%^',',')} - {i[2]}")
+                elif i[0]=='Low':
+                    classing[2].append(f" {i[1].replace('$#%^',',')} - {i[2]}")
+            for i in range(3):
+                print(priority[i])
+                for i in classing[i]:
+                    print(i)
+def voir2():
+    with open(f"{nom_utili}/taches.csv",'r') as f:
+        lines=f.readlines()
+        for indice,i in enumerate(lines,1):
+                i=i.split(',')
+                print(f"{indice} : {i[0]} - {i[1].replace('$#%^',',')} - {i[2]}")
 #! Add new tasks and their priority. (We should transform the priority to english later.)
 def ajouter():
-        print("Entrer vos taches, cliquer entrer pour passer a la tache suivante entrer 'Fin' pour finir l'ajout de taches.")
+        print("Enter your tasks, hit enter to pass.")
         taches=[]
-        pr='\n1. elevée\n2. Moyenne\n3. Faible'
         while True:
             tache={'task':None,'priority':None}
-            task = input("Tache >>> ")
-            if task.lower()=='fin':
+            task = input("Task: ")
+            if task.lower()=='stop':
                 if not taches:
-                    print('aucun tache ajoutée')
+                    print('No tasks added')
                     t.sleep(1)
-                    clear()
                     break
-                with open(f"{nom_utili}/taches.txt",'a+') as f:
+                with open(f"{nom_utili}/taches.csv",'a+') as f:
                     for i in taches:
-                        f.write(f"[{i['priority']}] - {i['task']} - {date.today()}\n")
-                print("les taches sont ajoutees avec succèes")
-
+                        f.write(f"{i['priority']},{i['task'].replace(',','$#%^')},{date.today()}\n")
+                print("Tasks added correctly")
                 print('...')
                 t.sleep(1)
                 clear()
                 general()
             while True:
-                priority=input(f"Choisir une option: {pr}\n>>> ")
-                if priority=='1':
-                    tache['priority']='Elevée'
+                priority=input("Priority: ")
+                if priority=='hight':
+                    tache['priority']='Hight'
                     break
-                elif priority=='2':
-                    tache['priority']='Moyenne'
+                elif priority=='medium':
+                    tache['priority']='Medium'
                     break
-                elif priority=='3':
-                    tache['priority']='Faible'
+                elif priority=='low':
+                    tache['priority']='Low'
                     break
                 else:
-                    print('Invalid Choix')
+                    print('invalid priority input, try again')
                     t.sleep(1)
             tache['task']=task
             taches.append(tache)
 #! remove tasks
 def supprimer():
-    voir()
-    with open(f"{nom_utili}/taches.txt",'r+') as f:
+    voir2()
+    with open(f"{nom_utili}/taches.csv",'r+') as f:
         lines=f.readlines()
     try:
-        index = input("choisir l'incide du tache a supprimer, ou entrer 'N' pour anuler : ")
-        if index.lower()=='n':
-            print('Action anuulee.')
+        index = input("write the index of the task that you want to remove: ")
+        if index.lower()=='exit':
+            print('action canceled')
             t.sleep(1)
             general()
         else:
             index_int=int(index)
             index_int-=1
             supp=lines.pop(index_int)
-            with open(f"{nom_utili}/taches.txt",'w+') as f:
+            with open(f"{nom_utili}/taches.csv",'w+') as f:
                 for i in lines:
                     f.write(i)
-            with open(f"{nom_utili}/corbeille.txt",'a+') as f:
+            with open(f"{nom_utili}/corbeille.csv",'a+') as f:
                 f.seek(0,2)
                 f.write(supp)
-            print(f"la tache {index} est supprimer")
+            print(f"Task {index} deleted")
             t.sleep(1.5)
             clear()
     except IndexError:
-        print("Invalide entre, veuillez entrer un indice existant")
+        print("invalid input, try again")
         t.sleep(2)
         supprimer()
 #! View The trash
 def corbeille():
-    clear()
-    if  os.path.getsize(f"{nom_utili}/corbeille.txt")==0:
-        print(" la corbeille est vide.")
+    if  os.path.getsize(f"{nom_utili}/corbeille.csv")==0:
+        print("recycle bin empty.")
         t.sleep(0.5)
         clear()
         general()
-    print("Les taches recement supprimer : ")
-    with open(f"{nom_utili}/corbeille.txt",'r+') as f:
+    with open(f"{nom_utili}/corbeille.csv",'r') as f:
         lines=f.readlines()
     for indice,i in enumerate(lines,1):
-        if i !=0:
-            print(f"{indice} : {i}")
+            i=i.split(',')
+            print(f"{indice} : {i[0]} - {i[1].replace('$#%^',',')} - {i[2]}")
             t.sleep(0.4)
-    index=input("choisir un indice, entrer 'N' pour annuler l'action : ")
-    if index.lower()=='n':
-        print("Action annulee.")
+    index=input("Choose an index: ")
+    if index.lower()=='exit':
+        print("Action canceled")
         t.sleep(0.4)
         clear()
         general()
     try:
-        index_int=int(index)
-        index_int-=1
-        choix=input("Vous voulez supprimer la tache (1), cette tache ou la restorer (2) : ")
-        if choix=='1':
-            choi_def=input("cette tache sera supprimer definitivement, Etes vous sure(O/N) :")
-            if choi_def.lower()=='o' or choi_def=='0':
+        index_int=int(index)-1
+        choice=input('>>> ')
+        if choice=='delete':
+            choi_def=input("This task will be permanently removed, Are you sure (y/n) :")
+            if choi_def.lower()=='y':
                 lines.pop(index_int)
                 with open(f"{nom_utili}/corbeille.txt",'w+') as f:
                     for i in lines:
                         f.write(i)
-                print("👍")
+                print("Done.")
                 t.sleep(0.4)
                 clear()
             elif choi_def.lower()=='n':
-                print("Action annule.")
+                print("Action canceled")
                 t.sleep(0.4)
                 clear()
                 general()
+            elif choi_def=='exit':
+                clear()
+                general()
             else:
-                print("choix invalide.")
+                print("invalid input, try again.")
                 corbeille()
-        elif choix=='2':
+        elif choice=='restore':
             with open(f"{nom_utili}/taches.txt",'a+') as f:
                 f.write(lines[index_int])
             lines.pop(index_int)
             with open(f"{nom_utili}/corbeille.txt",'w+') as f:
                 for i in lines:
                     f.write(i)
-            print('👍')
+            print('Done')
             t.sleep(0.4)
             clear()
     except:
-        print("Choix invalide.")
+        print("Invalid input, try again.")
         t.sleep(0.4)
         clear()
         corbeille()
 
 #! the main function
 def general():
+    print(f" ----------- {alre_nom_utili} ----------")
     while True:
-        print("\nchoisir une option : " )
-        menu()
         choix = input(">>> ")
-        if choix == '1':
+        if choix == 'view tasks':
             print('Prossus...')
             t.sleep(0.5)
             voir()
-        elif choix == '2':
+        elif choix == 'add tasks':
             ajouter()
-        elif choix == '3':
+        elif choix == 'delete task':
             supprimer()
-        elif choix == '4':
+        elif choix == 'recycle bin':
             corbeille()
-        elif choix == '5':
+        elif choix == 'exit':
             clear()
             start()
+        elif choix=='cls':
+            clear()
+            print(f"---------- {alre_nom_utili} ----------")
+        elif choix=='clear':
+            o=input('That will delete all current tasks, are you sure (y,n): ')
+            if o=='y':
+              open(f"{nom_utili}/taches.txt",'w') 
+            elif o=='n':
+                print('Action canceled')
+                general()
+            else:
+                print('invalid input, back to dashboard.')
+                general()
+        elif choix=='help':
+            help_()
         else:
-            print("\ninvalide choix, choisir un nombre existant dans la liste.")
+            print("invalid input, try again, use help to learn the right  commands.")
             t.sleep(1)
             clear()
 start()
-
