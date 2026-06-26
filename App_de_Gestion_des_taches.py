@@ -14,6 +14,9 @@ clear()
 def codde():
          global code
          code = input("create a password : ")
+         if len(code)==0:
+             print('invalid password. Please try again')
+             codde()
          veerification = input('verify it : ')
          if veerification==code:
             os.makedirs(nom_utili)
@@ -97,12 +100,8 @@ def start():
     if choic_input == "sign up":
         while True:
             nom_utili = input("user name: ")
-            if os.path.exists(nom_utili):
-                print("ce nom d'utilisateur est deja existant. Veuillez saisir un autre.")
-                print('...')
-                t.sleep(1.5)
-                clear()
-                start()
+            if os.path.exists(nom_utili) or len(nom_utili)==0:
+                print("This user name is already exist or invalid. please try again.")
             else:
                 codde() 
 
@@ -157,7 +156,7 @@ def help_():
             (The user name and the password can't change currently)   #!#!#!
         In the dashboard (after signing):
             add tasks       to create more tasks
-                accepted priority types        hight,medium,low
+                accepted priority types        high,medium,low
                 stop                           stop adding tasks 
             delete task
             recycle bin     enter the recycle bin to delete permanently tasks (use 'delete') or to restore them (use 'restore')
@@ -170,7 +169,7 @@ def help_():
 #! view the current tasks
 def voir():
     clear()
-    if os.path.getsize(f"{nom_utili}/taches.txt")==0:
+    if os.path.getsize(f"{nom_utili}/taches.csv")==0:
         print("No active tasks.")
         print("...")
         t.sleep(1.5)
@@ -178,22 +177,23 @@ def voir():
         general()
     else:
         print("Your tasks :")
-        priority=['Hight:','Medium:','Low:']
+        priority=['High:','Medium:','Low:']
         with open(f"{nom_utili}/taches.csv",'r+') as f:
             lines=f.readlines()
             classing=[[],[],[]]
             for i in lines:
                 i=i.split(',')
-                if i[0]=='Hight':
-                    classing[0].append(f" {i[1].replace('$#%^',',')} - {i[2]}")
+                if i[0]=='High':
+                    classing[0].append(f"   [{i[2].replace('\n','')}] - {i[1].replace('$#%^',',')}")
                 elif i[0]=='Medium':
-                    classing[1].append(f" {i[1].replace('$#%^',',')} - {i[2]}")
+                    classing[1].append(f"   [{i[2].replace('\n','')}] - {i[1].replace('$#%^',',')}")
                 elif i[0]=='Low':
-                    classing[2].append(f" {i[1].replace('$#%^',',')} - {i[2]}")
+                    classing[2].append(f"   [{i[2].replace('\n','')}] - {i[1].replace('$#%^',',')}")
             for i in range(3):
-                print(priority[i])
-                for i in classing[i]:
-                    print(i)
+                if not len(classing[i])==0:
+                    print(priority[i])
+                    for i in classing[i]:
+                        print(i)
 def voir2():
     with open(f"{nom_utili}/taches.csv",'r') as f:
         lines=f.readlines()
@@ -222,8 +222,8 @@ def ajouter():
                 general()
             while True:
                 priority=input("Priority: ")
-                if priority=='hight':
-                    tache['priority']='Hight'
+                if priority=='high':
+                    tache['priority']='High'
                     break
                 elif priority=='medium':
                     tache['priority']='Medium'
