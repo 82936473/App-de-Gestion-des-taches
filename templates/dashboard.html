@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">   
+{% endblock head %}
+{% block content %}
+
+<div class="dashboard">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <a href="#">🤖 AI Chat</a>
+
+        <a href="#" class="active">📋 Tasks</a>
+
+        <a href="#">ℹ️ About</a>
+
+        <a href="#">🚪 Sign out</a>
+
+    </aside>
+
+    <!-- Contenu principal -->
+    <main class="content">
+
+        <h1>Dashboard</h1>
+
+        {% for task in tasks %}
+
+        <div class="task-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <p><strong>Due date:</strong> {{ task[3] }}</p>
+
+                    <p>
+                        <strong>Priority:</strong>
+
+                        <span class="priority {{ task[1]|lower }}">
+                            {{ task[1] }}
+                        </span>
+
+                    </p>
+
+                </div>
+
+                <button class="menu">⋮</button>
+
+            </div>
+
+            <hr>
+
+            <h2>{{ task[2] }}</h2>
+
+        </div>
+
+        {% endfor %}
+
+    </main>
+
+</div>
+
+{% endblock %}

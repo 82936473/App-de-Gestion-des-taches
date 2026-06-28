@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+{% block head %}
+
+<style>
+     #signing_container {
+        display:flex; 
+        justify-content: center; 
+        align-items:center; 
+        flex-direction:column; 
+        gap: 10px;
+     }
+     #signing_container input{
+             width: 500px;
+             height: 25px;
+             font-size: 16px;
+             padding: 5px;
+        }
+</style>
+
+{% endblock head%}
+
+
+{% block content%}
+
+<h1>Log in to your account</h1>
+<form action="{{ url_for('log_in') }}" method="POST">
+<div id="signing_container">
+    <input type="text" name="username" placeholder="User name" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <input type="submit" value="Submit">
+    {% if error %}
+    <p style="color:red;">{{ error }}</p>
+    {%endif%}
+</div>
+</form>
+
+{% endblock content%}

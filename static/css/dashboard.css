@@ -1,0 +1,148 @@
+
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f7f7f7;
+}
+
+
+/* Structure */
+
+.dashboard{
+    display:flex;
+    min-height:100vh;
+}
+
+
+/* Sidebar */
+
+.sidebar{
+    width:240px;
+    background:white;
+    border-right:1px solid #ddd;
+    padding-top:30px;
+}
+
+.sidebar a{
+    display:block;
+    text-decoration:none;
+    color:#333;
+    font-size:20px;
+    padding:18px 25px;
+    margin:10px;
+    border-radius:12px;
+    transition:0.2s;
+}
+
+.sidebar a:hover{
+    background:#ece8ff;
+    color:#6d4aff;
+}
+
+.sidebar .active{
+    background:#ece8ff;
+    color:#6d4aff;
+    font-weight:bold;
+}
+
+
+/* Partie principale */
+
+.content{
+    flex:1;
+    padding:40px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.content h1{
+    font-size:48px;
+    margin-bottom:50px;
+}
+
+
+/* Carte */
+
+.task-card{
+    width:900px;
+    background:#f8af45;
+    border-radius:18px;
+    padding:25px 35px;
+    margin-bottom:30px;
+
+    box-shadow:0px 8px 20px rgba(0,0,0,0.15);
+
+    transition:0.2s;
+}
+
+.task-card:hover{
+    transform:translateY(-5px);
+}
+
+
+/* En-tête de la carte */
+
+.card-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+}
+
+.card-header p{
+    margin:8px 0;
+    font-size:22px;
+}
+
+
+/* Bouton ⋮ */
+
+.menu{
+    background:none;
+    border:none;
+    font-size:30px;
+    cursor:pointer;
+}
+
+
+/* Ligne */
+
+.task-card hr{
+    margin:20px 0;
+    border:none;
+    border-top:1px solid rgba(0,0,0,0.2);
+}
+
+
+/* Nom de la tâche */
+
+.task-card h2{
+    margin:0;
+    font-size:36px;
+}
+
+
+/* Badges */
+
+.priority{
+    padding:8px 18px;
+    border-radius:20px;
+    color:white;
+    font-weight:bold;
+}
+
+
+/* Couleurs */
+
+.high{
+    background:#ff4d4d;
+}
+
+.medium{
+    background:#ffd43b;
+    color:black;
+}
+
+.low{
+    background:#2ecc71;
+}
