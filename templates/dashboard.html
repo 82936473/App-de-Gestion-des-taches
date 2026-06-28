@@ -22,22 +22,21 @@
     <!-- Contenu principal -->
     <main class="content">
 
-        <h1>Dashboard</h1>
+        <h1>Tasks</h1>
 
         {% for task in tasks %}
 
-        <div class="task-card">
+        <div class="task-card" id="{{ task[1]|lower }}">
 
             <div class="card-header">
 
                 <div>
 
                     <p><strong>Due date:</strong> {{ task[3] }}</p>
-
                     <p>
                         <strong>Priority:</strong>
 
-                        <span class="priority {{ task[1]|lower }}">
+                        <span>
                             {{ task[1] }}
                         </span>
 
@@ -45,7 +44,17 @@
 
                 </div>
 
-                <button class="menu">⋮</button>
+                <div class="dropdown" id="{{ task[1]|lower }}">
+
+                     <button class="menu">⋮</button>
+
+                    <div class="dropdown-content">
+                          <a href="#">✏ Edit</a>
+                          <a href="#">🗑 Delete</a>
+                          <a href="#">✔ Complete</a>
+                     </div>
+
+                </div>
 
             </div>
 
@@ -61,4 +70,43 @@
 
 </div>
 
+
+<script>
+const buttons = document.querySelectorAll(".menu");
+
+buttons.forEach(button => {
+
+    button.addEventListener("click", function (event) {
+
+        // Prevent the click from reaching the document
+        event.stopPropagation();
+
+        // Close all other dropdowns
+        document.querySelectorAll(".dropdown-content").forEach(menu => {
+            if (menu !== this.nextElementSibling) {
+                menu.style.display = "none";
+            }
+        });
+
+        // Toggle this dropdown
+        const menu = this.nextElementSibling;
+
+        if (menu.style.display === "block")
+            menu.style.display = "none";
+        else
+            menu.style.display = "block";
+
+    });
+
+});
+
+// Close all dropdowns when clicking anywhere else
+document.addEventListener("click", function () {
+
+    document.querySelectorAll(".dropdown-content").forEach(menu => {
+        menu.style.display = "none";
+    });
+
+});
+</script>
 {% endblock %}

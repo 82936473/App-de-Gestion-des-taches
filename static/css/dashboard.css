@@ -70,14 +70,27 @@ body{
     border-radius:18px;
     padding:25px 35px;
     margin-bottom:30px;
-
+    
     box-shadow:0px 8px 20px rgba(0,0,0,0.15);
-
+    
     transition:0.2s;
 }
+ /* Couleurs */
 
+#high{
+    background:#ff6969;
+}
+
+#medium{
+    background:#ffba3b;
+    color:black;
+}
+
+#low{
+    background:#2ecc71;
+}
 .task-card:hover{
-    transform:translateY(-5px);
+    transform:translateY(-8px);
 }
 
 
@@ -91,17 +104,7 @@ body{
 
 .card-header p{
     margin:8px 0;
-    font-size:22px;
-}
-
-
-/* Bouton ⋮ */
-
-.menu{
-    background:none;
-    border:none;
-    font-size:30px;
-    cursor:pointer;
+    font-size:16px;
 }
 
 
@@ -131,18 +134,38 @@ body{
     font-weight:bold;
 }
 
-
-/* Couleurs */
-
-.high{
-    background:#ff4d4d;
+/* menu button */
+.dropdown{
+    
+    position:relative;
+    display:inline-block;
 }
 
-.medium{
-    background:#ffd43b;
+.menu{
+    background:none;
+    border:none;
+    font-size:30px;
+    cursor:pointer;
+}
+
+.dropdown-content{
+    display:none;
+    position:absolute;
+    right:0;
+    background:white;
+    min-width:150px;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.2);
+    overflow:hidden;
+}
+
+.dropdown-content a{
+    display:block;
+    padding:12px;
+    text-decoration:none;
     color:black;
 }
 
-.low{
-    background:#2ecc71;
+.dropdown-content a:hover{
+    background:#f3f3f3;
 }
