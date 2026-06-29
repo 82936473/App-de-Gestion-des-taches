@@ -31,10 +31,8 @@ def sign_up():
 
 @app.route('/log_in',methods=['POST','GET'])
 def log_in():
-    print('-------------------log-------------------')
     error=None
     if request.method=='POST':
-        print('----------------------- pass log_in')
         username = request.form.get("username")
         password = request.form.get("password")
         try:
@@ -48,8 +46,11 @@ def log_in():
 def dashboard():
     username=session['username']
     tasks=s.get_tasks(username)
-    print(tasks)
     return render_template('dashboard.html',title='Dashboard',tasks=tasks)
-
+@app.route('/delete/<task_id>')
+def delete(task_id):
+    username=session['username']
+    s.delete(username,task_id)
+    return redirect(url_for("dashboard"))
 if __name__ == "__main__":
     app.run(debug=True)

@@ -6,66 +6,70 @@
 
 <div class="dashboard">
 
-    <!-- Sidebar -->
-    <aside class="sidebar">
+    {% block sidebar %} {{ super()}} {% endblock sidebar %}
 
-        <a href="#">🤖 AI Chat</a>
-
-        <a href="#" class="active">📋 Tasks</a>
-
-        <a href="#">ℹ️ About</a>
-
-        <a href="#">🚪 Sign out</a>
-
-    </aside>
-
-    <!-- Contenu principal -->
     <main class="content">
+        {% if tasks %}
+            <div class="toolbar">
+                <h1>Tasks</h1>
+                <div class="dropdown">
 
-        <h1>Tasks</h1>
-
-        {% for task in tasks %}
-
-        <div class="task-card" id="{{ task[1]|lower }}">
-
-            <div class="card-header">
-
-                <div>
-
-                    <p><strong>Due date:</strong> {{ task[3] }}</p>
-                    <p>
-                        <strong>Priority:</strong>
-
-                        <span>
-                            {{ task[1] }}
-                        </span>
-
-                    </p>
-
-                </div>
-
-                <div class="dropdown" id="{{ task[1]|lower }}">
-
-                     <button class="menu">⋮</button>
+                    <button class="menu">Sort by ▼</button>
 
                     <div class="dropdown-content">
-                          <a href="#">✏ Edit</a>
-                          <a href="#">🗑 Delete</a>
-                          <a href="#">✔ Complete</a>
-                     </div>
+                        <a href="{{ url_for('dashboard', sort='priority') }}">Priority</a>
+                        <a href="{{ url_for('dashboard', sort='date') }}">Due date</a>
+                        <a href="{{ url_for('dashboard', sort='name') }}">Alphabetical</a>
+                    </div> 
 
                 </div>
+            </div>
+            {% for task in tasks %}
+
+            <div class="task-card" id="{{ task[1]|lower }}">
+
+                <div class="card-header">
+
+                    <div>
+
+                        <p><strong>Due date:</strong> {{ task[3] }}</p>
+                        <p>
+                            <strong>Priority:</strong>
+
+                            <span>
+                                {{ task[1] }}
+                            </span>
+
+                        </p>
+
+                    </div>
+
+                    <div class="dropdown" id="{{ task[1]|lower }}">
+
+                        <button class="menu">⋮</button>
+
+                        <div class="dropdown-content">
+                            <a href="#">✏ Edit</a>
+                            <a href="{{ url_for('delete', task_id=task[0]) }}"">🗑 Delete</a>
+                            <a href="#">✔ Complete</a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <p>{{ task[2] }}<p>
 
             </div>
 
-            <hr>
-
-            <h2>{{ task[2] }}</h2>
-
-        </div>
-
-        {% endfor %}
-
+            {% endfor %}
+        {% else %}
+            <div class="toolbar">
+                    <h1>No active Tasks</h1>
+            </div>   
+        {% endif %}  
     </main>
 
 </div>

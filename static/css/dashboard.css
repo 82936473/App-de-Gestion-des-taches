@@ -14,38 +14,6 @@ body{
 }
 
 
-/* Sidebar */
-
-.sidebar{
-    width:240px;
-    background:white;
-    border-right:1px solid #ddd;
-    padding-top:30px;
-}
-
-.sidebar a{
-    display:block;
-    text-decoration:none;
-    color:#333;
-    font-size:20px;
-    padding:18px 25px;
-    margin:10px;
-    border-radius:12px;
-    transition:0.2s;
-}
-
-.sidebar a:hover{
-    background:#ece8ff;
-    color:#6d4aff;
-}
-
-.sidebar .active{
-    background:#ece8ff;
-    color:#6d4aff;
-    font-weight:bold;
-}
-
-
 /* Partie principale */
 
 .content{
@@ -56,24 +24,18 @@ body{
     align-items:center;
 }
 
-.content h1{
-    font-size:48px;
-    margin-bottom:50px;
-}
-
 
 /* Carte */
 
 .task-card{
-    width:900px;
-    background:#f8af45;
+    width:90%;
+    max-width:900px;
     border-radius:18px;
     padding:25px 35px;
     margin-bottom:30px;
-    
+    box-sizing:border-box;
     box-shadow:0px 8px 20px rgba(0,0,0,0.15);
-    
-    transition:0.2s;
+    transition:0.1s;
 }
  /* Couleurs */
 
@@ -111,7 +73,7 @@ body{
 /* Ligne */
 
 .task-card hr{
-    margin:20px 0;
+    margin:8px 0;
     border:none;
     border-top:1px solid rgba(0,0,0,0.2);
 }
@@ -129,12 +91,12 @@ body{
 
 .priority{
     padding:8px 18px;
-    border-radius:20px;
+    border-radius:30px;
     color:white;
     font-weight:bold;
 }
 
-/* menu button */
+/* menu task button */
 .dropdown{
     
     position:relative;
@@ -168,4 +130,20 @@ body{
 
 .dropdown-content a:hover{
     background:#f3f3f3;
+}
+/* tool bar */
+.toolbar{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:40px;
+}
+.toolbar button{
+    font-size:22px;
+}
+.toolbar h1{
+    font-size:47px;
+
+    margin-bottom:0px;
 }

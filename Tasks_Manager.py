@@ -28,39 +28,31 @@ class Tasks_Manager():
         except Exception:
               raise ValueError('Incorrect Username or Password')
     def get_tasks(user_name):
-         with open(f"users/{user_name}/tasks.csv") as f:
-              lines=f.readlines()
-         final_return=[]
-         for i in lines:
-              curr=[]
-              i=i.strip()
-              i=i.split(',')
-              curr.append(i[0])  #! id
-              curr.append(i[1])  #! priority
-              curr.append(i[2])  #! task
-              curr.append(i[3])  #! date
-              final_return.append(curr)
-         return final_return
+         if os.path.getsize(f"users/{user_name}/tasks.csv") == 0:
+              return None
+         df=p.read_csv(f"users/{user_name}/tasks.csv")
+         lines=df.values.tolist()
+         return lines
     def add(user_name,task,priority):
             from datetime import date
             if os.path.getsize(f"users/{user_name}/tasks.csv") == 0: 
-                 pd=p.DataFrame([[1,priority,task,date.today()]],columns=[1,2,3,4])
-                 pd.to_csv(f"users/{user_name}/tasks.csv",mode='a',header=False,index=False)
+                 pd=p.DataFrame([[1,priority,task,date.today()]],columns=['ids',1,2,3])
+                 pd.to_csv(f"users/{user_name}/tasks.csv",mode='a',index=False)
                  return
             with open(f"users/{user_name}/tasks.csv",'r') as f:
                 lines=csv.reader(f)
                 lines=list(lines)
                 count=str(int(lines[-1][0])+1)
             pd=p.DataFrame([[count,priority,task,date.today()]],columns=['ids',1,2,3])
-            pd.to_csv(f"users/{user_name}/tasks.csv",mode='a',header=False,index=False)
+            pd.to_csv(f"users/{user_name}/tasks.csv",mode='a',index=False)
 
-    def remove(user_name,id): #!#! For now, I take the task as a argument, but I should think about something else. (case: task too long)
+    def delete(user_name,id): #!#! For now, I take the task as a argument, but I should think about something else. (case: task too long)
         with open(f"users/{user_name}/tasks.csv",'r+') as f:
             lines=f.readlines()
         new=[]
         for i in lines:
             a=i.split(',')
-            if int(a[0])==id:
+            if a[0]==id:
                 continue
             new.append(i)
         with open(f"users/{user_name}/tasks.csv",'w') as f:
