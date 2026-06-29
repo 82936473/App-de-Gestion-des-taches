@@ -1,0 +1,43 @@
+{% extends "layout.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static',filename='css/add_task.css') }}">
+{% endblock head %}
+
+{% block content %}
+
+<div class="add-task">
+
+    {% block sidebar %} {{ super() }} {% endblock %}
+
+    <main class="content">
+             <h1>Add Task</h1>
+
+        <form class="add-card" action="{{ url_for('add_task') }}" method="POST">
+
+            <label>Task</label>
+
+            <input type="text" name="task" placeholder="Enter your task" required>
+
+            <label>Priority</label>
+
+            <select name="priority">
+
+                <option value="High">🔴 High</option>
+                <option value="Medium">🟠 Medium</option>
+                <option value="Low">🟢 Low</option>
+
+            </select>
+
+            <label>Due date</label>
+
+            <input type="date" name="due_date">
+
+            <button type="submit">Add Task</button>
+
+        </form>
+
+    </main>
+
+</div>
+
+{% endblock %}

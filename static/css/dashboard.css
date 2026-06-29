@@ -1,20 +1,8 @@
-
-body{
-    margin:0;
-    font-family:Arial, Helvetica, sans-serif;
-    background:#f7f7f7;
-}
-
-
-/* Structure */
-
 .dashboard{
     display:flex;
     min-height:100vh;
 }
 
-
-/* Partie principale */
 
 .content{
     flex:1;
@@ -133,17 +121,16 @@ body{
 }
 /* tool bar */
 .toolbar{
-    width:100%;
+    width:55%;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:40px;
+    margin-bottom:20px;
 }
 .toolbar button{
-    font-size:22px;
+    font-size:25px;
 }
-.toolbar h1{
-    font-size:47px;
-
-    margin-bottom:0px;
+.toolbar h3{
+    font-size:30px;
+    margin-bottom:10px
 }

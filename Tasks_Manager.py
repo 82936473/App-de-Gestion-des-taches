@@ -37,14 +37,14 @@ class Tasks_Manager():
             from datetime import date
             if os.path.getsize(f"users/{user_name}/tasks.csv") == 0: 
                  pd=p.DataFrame([[1,priority,task,date.today()]],columns=['ids',1,2,3])
-                 pd.to_csv(f"users/{user_name}/tasks.csv",mode='a',index=False)
+                 pd.to_csv(f"users/{user_name}/tasks.csv",mode='a',header=False,index=False)
                  return
             with open(f"users/{user_name}/tasks.csv",'r') as f:
                 lines=csv.reader(f)
                 lines=list(lines)
                 count=str(int(lines[-1][0])+1)
             pd=p.DataFrame([[count,priority,task,date.today()]],columns=['ids',1,2,3])
-            pd.to_csv(f"users/{user_name}/tasks.csv",mode='a',index=False)
+            pd.to_csv(f"users/{user_name}/tasks.csv",mode='a',header=False,index=False)
 
     def delete(user_name,id): #!#! For now, I take the task as a argument, but I should think about something else. (case: task too long)
         with open(f"users/{user_name}/tasks.csv",'r+') as f:

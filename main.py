@@ -42,11 +42,36 @@ def log_in():
         except ValueError as e:
             error=str(e)
     return render_template('log_in.html',title='Log in',error=error)
+
+
 @app.route('/dashboard')
 def dashboard():
     username=session['username']
     tasks=s.get_tasks(username)
     return render_template('dashboard.html',title='Dashboard',tasks=tasks)
+
+
+@app.route("/add", methods=["GET", "POST"])
+def add_task():
+
+    if request.method == "POST":
+
+        task = request.form["task"]
+        priority = request.form["priority"]
+        due_date = request.form["due_date"]
+
+        s.add(
+            session["username"],
+            task,
+            priority,
+            # due_date
+        )
+
+        return redirect(url_for("dashboard"))
+
+    return render_template("add_task.html")
+
+
 @app.route('/delete/<task_id>')
 def delete(task_id):
     username=session['username']

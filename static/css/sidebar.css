@@ -2,7 +2,8 @@
     width:240px;
     background:rgb(230,230,230);
     border-right:1px solid #ddd;
-    padding-top:30px;
+    padding-top:10px;
+    border-radius:12px;
 }
 
 .sidebar a{
@@ -19,13 +20,13 @@
 
  
 .sidebar a:hover{
-    background:#ffe8e8;
-    color:#ff4a4a;
+    background:#e8f3ff;
+    color:#564aff;
 } 
 
 .sidebar .active{
-    background:#ffe8e8;
-    color:#ff4a4a;
+    background:#e8f3ff;
+    color:#564aff;
     font-weight:bold;
 }
 

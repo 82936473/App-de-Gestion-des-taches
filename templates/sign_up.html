@@ -14,9 +14,19 @@
      input{
              text-align: center;
              width: 500px;
-             height: 25px;
+             height: 30px;
              font-size: 16px;
              padding: 5px;
+             border-radius:12px;
+             border-color: black;
+             box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
+
+        }
+        h1,h2{
+         text-align: center;
+        }
+        a{
+         text-decoration: none;
         }
 </style>
 
@@ -24,6 +34,7 @@
 
 
 {% block content %}
+{% block nav %} {{super()}} {% endblock nav %}
 <h1>Sign up to organize your tasks intelligently</h1>
 <form action="{{ url_for('sign_up') }}" method="POST">
 <div id="signing_container" style="display:flex; justify-content: center; align-items:center; flex-direction:column; gap: 10px;">
