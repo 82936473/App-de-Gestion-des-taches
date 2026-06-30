@@ -4,7 +4,9 @@ from functools import wraps
 from database import db
 from sqlalchemy import case 
 from werkzeug.security import generate_password_hash, check_password_hash
+import os
 app = Flask(__name__)
+app.secret_key = os.environ.get("SECRET_KEY", "dev_secret")
 app.secret_key="Long_random_secret_key"
 tasks=None
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///horizons.db"
@@ -156,9 +158,8 @@ def logout():
     if "user_id" not in session:
          return redirect(url_for("log_in"))
     session.clear()
-
     return redirect(url_for("home"))
+with app.app_context():
+    db.create_all()
 if __name__ == "__main__":
     app.run(debug=True)
-    # with app.app_context():
-    #     db.create_all()
