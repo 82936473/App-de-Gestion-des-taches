@@ -3,19 +3,14 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">   
 {% endblock head %}
 {% block content %}
-
 <div class="dashboard">
-
     {% block sidebar %} {{ super()}} {% endblock sidebar %}
-
     <main class="content">
         {% if tasks %}
             <div class="toolbar">
                 <h3>Tasks</h3>
                 <div class="dropdown">
-
-                    <button class="menu">Sort by ▼</button>
-
+                    <button class="menuu"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M120-240v-80h240v80H120Zm0-200v-80h480v80H120Zm0-200v-80h720v80H120Z"/></svg><span>Sort by</span></button>
                     <div class="dropdown-content">
                         <a href="{{ url_for('dashboard', sort='priority') }}">Priority</a>
                         <a href="{{ url_for('dashboard', sort='date') }}">Due date</a>
@@ -45,14 +40,14 @@
 
                     </div>
 
-                    <div class="dropdown" id="{{ task.priority|lower }}">
+                    <div class="dropdown">
 
-                        <button class="menu">⋮</button>
+                        <button class="menuu">⋮</button>
 
                         <div class="dropdown-content">
-                            <a href="{{ url_for('edit_task', task_id=task.id) }}">✏ Edit</a>
-                            <a href="{{ url_for('delete_task', task_id=task.id) }}"">🗑 Delete</a>
-                            <a href="#">✔ Complete</a>
+                            <a href="{{ url_for('edit_task', task_id=task.id) }}"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg><span>Edit</span></a>
+                            <a href="{{ url_for('delete_task', task_id=task.id) }}""><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg><span>Delete</span></a>
+                            <a href="#"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z"/></svg><span>Complete</span></a>
                         </div>
 
                     </div>
@@ -67,9 +62,7 @@
 
             {% endfor %}
         {% else %}
-            <div class="toolbar">
-                    <h1>No active Tasks</h1>
-            </div>   
+                    <h1 style="text-align: center;">No active Tasks</h1> 
         {% endif %}  
     </main>
 
@@ -77,7 +70,7 @@
 
 
 <script>
-const buttons = document.querySelectorAll(".menu");
+const buttons = document.querySelectorAll(".menuu");
 
 buttons.forEach(button => {
 
@@ -87,19 +80,19 @@ buttons.forEach(button => {
         event.stopPropagation();
 
         // Close all other dropdowns
-        document.querySelectorAll(".dropdown-content").forEach(menu => {
-            if (menu !== this.nextElementSibling) {
-                menu.style.display = "none";
+        document.querySelectorAll(".dropdown-content").forEach(menuu => {
+            if (menuu !== this.nextElementSibling) {
+                menuu.style.display = "none";
             }
         });
 
         // Toggle this dropdown
-        const menu = this.nextElementSibling;
+        const menuu = this.nextElementSibling;
 
-        if (menu.style.display === "block")
-            menu.style.display = "none";
+        if (menuu.style.display === "block")
+            menuu.style.display = "none";
         else
-            menu.style.display = "block";
+            menuu.style.display = "block";
 
     });
 
@@ -108,10 +101,11 @@ buttons.forEach(button => {
 // Close all dropdowns when clicking anywhere else
 document.addEventListener("click", function () {
 
-    document.querySelectorAll(".dropdown-content").forEach(menu => {
-        menu.style.display = "none";
+    document.querySelectorAll(".dropdown-content").forEach(menuu => {
+        menuu.style.display = "none";
     });
 
 });
 </script>
+{% block sidebar_script %} {{super()}} {% endblock %}
 {% endblock %}

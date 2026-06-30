@@ -12,7 +12,12 @@
     align-items:center;
 }
 
-
+.dropdown-content svg{
+    width:24px;
+    height:24px;
+    flex-shrink: 0;
+    fill:currentColor;
+}
 /* Carte */
 
 .task-card{
@@ -25,20 +30,44 @@
     box-shadow:0px 8px 20px rgba(0,0,0,0.15);
     transition:0.1s;
 }
+.toolbar .dropdown-content{
+    background:rgba(201, 200, 200, 0.692);
+}
+.toolbar svg{
+    width:24px;
+    height:24px;
+    flex-shrink: 0;
+    fill:currentColor;
+}
+.toolbar button{
+    display:flex;
+    align-items: center;
+    gap: 7px;
+    padding: 14px 18px;
+}
  /* Couleurs */
 
 #high{
     background:#ff6969;
 }
-
+#high .dropdown-content{
+    background: #fa8c8c;
+}
 #medium{
-    background:#ffba3b;
+    background:#fcb228;
+    color:black;
+ }
+#medium .dropdown-content{
+    background:#f3c266;
     color:black;
 }
-
-#low{
+#low, #low .dropdown-content{
     background:#2ecc71;
 }
+#low .dropdown-content{
+    background:#4cff96;
+}
+
 .task-card:hover{
     transform:translateY(-8px);
 }
@@ -86,12 +115,12 @@
 
 /* menu task button */
 .dropdown{
-    
+    font-size: 20px;
     position:relative;
     display:inline-block;
 }
 
-.menu{
+.menuu{
     background:none;
     border:none;
     font-size:30px;
@@ -110,8 +139,10 @@
 }
 
 .dropdown-content a{
-    display:block;
-    padding:12px;
+    display:flex;
+    align-items: center;
+    gap: 15px;
+    padding:14px 18px;
     text-decoration:none;
     color:black;
 }
@@ -121,7 +152,7 @@
 }
 /* tool bar */
 .toolbar{
-    width:55%;
+    width:56%;
     display:flex;
     justify-content:space-between;
     align-items:center;

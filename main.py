@@ -106,7 +106,7 @@ def dashboard():
 
     tasks = query.all()
 
-    return render_template("dashboard.html",title="Dashboard",tasks=tasks)
+    return render_template("dashboard.html",title="Dashboard",tasks=tasks,status="active")
 @app.route("/add", methods=["GET", "POST"])
 @login_required
 def add_task():

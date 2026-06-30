@@ -2,6 +2,18 @@
 {% block head %}
 
 <style>
+     .main-container{
+       margin:0;
+       min-height:70vh;
+       display:flex;
+       justify-content:center;
+       align-items:center;
+       font-family:Arial, Helvetica, sans-serif;
+       background:#f7f7f7;
+     }
+     .main{
+       text-align: center;
+     }
      #signing_container {
         display:flex; 
         justify-content: center; 
@@ -29,7 +41,8 @@
 
 {% block nav %} {{super()}} {% endblock nav %}
 
-
+<div class="main-container">
+<div class="main">
 <h1>Log in to your account</h1>
 <form action="{{ url_for('log_in') }}" method="POST">
 <div id="signing_container">
@@ -41,5 +54,7 @@
     {%endif%}
 </div>
 </form>
+</div>
+</div>
 
 {% endblock content%}

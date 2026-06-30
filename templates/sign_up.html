@@ -2,14 +2,24 @@
 {% block head%}
 
 <style>
-     div {
+   .main-container{
+      margin:0;
+      min-height:70vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      font-family:Arial, Helvetica, sans-serif;
+      background:#f7f7f7;
+   }
+   .main{
+      text-align: center;
+   }
+     #signing_container {
         display:flex; 
         justify-content: center; 
+        flex-direction:column;
         align-items:center; 
         gap: 10px;
-     }
-     #signing_container {
-        flex-direction:column;
      }
      input{
              text-align: center;
@@ -35,9 +45,11 @@
 
 {% block content %}
 {% block nav %} {{super()}} {% endblock nav %}
+<div class="main-container">
+<div class="main">
 <h1>Sign up to organize your tasks intelligently</h1>
 <form action="{{ url_for('sign_up') }}" method="POST">
-<div id="signing_container" style="display:flex; justify-content: center; align-items:center; flex-direction:column; gap: 10px;">
+<div id="signing_container">
     <input type="text" name="username" placeholder="User name" required>
     <input type="password" name="password" placeholder="Password" required>
     <input type="password" name="verifypassword" placeholder="Verify Password" required>
@@ -48,4 +60,6 @@
     <a href="{{ url_for('log_in') }}">Already have an account?</a>
 </div>
 </form>
+</div>
+</div>
 {%endblock%}

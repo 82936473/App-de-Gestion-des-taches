@@ -12,7 +12,7 @@
     <main class="content">
              <h1>Add Task</h1>
 
-        <form class="add-card" action="{{ url_for('add_task') }}" method="POST">
+        <form class="add-card" action="{{ url_for('add_task') }}" method="POST" id="task-card">
 
             <label>Task</label>
 
@@ -20,7 +20,7 @@
 
             <label>Priority</label>
 
-            <select name="priority">
+            <select name="priority" id="priority">
 
                 <option value="High">🔴 High</option>
                 <option value="Medium">🟠 Medium</option>
@@ -40,4 +40,27 @@
 
 </div>
 
+<script>
+
+const priority = document.getElementById("priority");
+const card = document.getElementById("task-card");
+
+priority.addEventListener("change", function(){
+
+    card.classList.remove("high", "medium", "low");
+
+    if(priority.value === "High"){
+        card.classList.add("high");
+    }
+    else if(priority.value === "Medium"){
+        card.classList.add("medium");
+    }
+    else{
+        card.classList.add("low");
+    }
+
+});
+
+</script>
+{% block sidebar_script %} {{super()}} {% endblock %}
 {% endblock %}

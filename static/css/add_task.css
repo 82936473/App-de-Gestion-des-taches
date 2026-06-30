@@ -16,7 +16,6 @@
 }
 .add-card{
     max-width:600px;
-    background: white;
     width: 90%;
     margin: 10px auto;
     margin-top: 0px;
@@ -26,9 +25,10 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
-
+    transition: 0.3s;
     box-sizing: border-box;
 }
+
 .add-card label{
     font-size: 18px;
     font-weight: bold;
@@ -38,10 +38,8 @@
     width: 100%;
     padding: 15px;
     font-size: 18px;
-
     border: 2px solid #ddd;
     border-radius: 12px;
-
     outline: none;
     box-sizing: border-box;
 }
@@ -90,6 +88,17 @@
 
 .add-card button:hover{
     background: #5a38db;
+}
+.add-card.high{
+    background:#ff6969;
+}
+
+.add-card.medium{
+    background:#ffba3b;
+}
+
+.add-card.low{
+    background:#2ecc71;
 }
 @media (max-width:700px){
 
