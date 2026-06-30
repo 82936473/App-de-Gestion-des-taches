@@ -1,8 +1,29 @@
 from flask import Flask, render_template,request,redirect,url_for,session
-from Tasks_Manager import Tasks_Manager as s
+from datetime import date
+from functools import wraps
+from database import db
+from sqlalchemy import case 
+from werkzeug.security import generate_password_hash, check_password_hash
 app = Flask(__name__)
 app.secret_key="Long_random_secret_key"
 tasks=None
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///horizons.db"
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+# db = SQLAlchemy()
+db.init_app(app)
+from models import User,Task
+with app.app_context():
+    db.create_all()
+
+def login_required(f):
+
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "user_id" not in session:
+            return redirect(url_for("log_in"))
+        return f(*args, **kwargs)
+    return decorated_function
+
 
 @app.route('/')
 @app.route('/home')
@@ -12,17 +33,24 @@ def home():
 
 @app.route('/sign_up',methods=['POST','GET'])
 def sign_up():
-    print('-------------------sign-------------------')
+    if "user_id" in session:
+         return redirect(url_for("dashboard"))
     error=None
     if request.method=='POST':
         username = request.form.get("username")
         password = request.form.get("password")
         verify = request.form.get("verifypassword")
         try:
-            if password!=verify:
-                raise ValueError("❌ Passwords do not match")
-            s.sign_up(username,password)
-            session["username"] = username
+            if password != verify:
+                raise ValueError("Password do not match")
+            existing_user = User.query.filter_by(username=username).first()
+            if existing_user:
+                raise ValueError("Username already exists")
+            new_user = User(username=username,password=generate_password_hash(password))  #!#!
+            db.session.add(new_user)
+            db.session.commit()
+            session["user_id"]=new_user.id
+            session["username"]=new_user.username
             return redirect(url_for('dashboard'))
         except ValueError as e:
             error=str(e)
@@ -31,51 +59,106 @@ def sign_up():
 
 @app.route('/log_in',methods=['POST','GET'])
 def log_in():
+    if "user_id" in session:
+        return redirect(url_for("dashboard"))
     error=None
     if request.method=='POST':
         username = request.form.get("username")
         password = request.form.get("password")
         try:
-            s.log_in(username,password)
-            session["username"] = username
-            return redirect(url_for('dashboard'))
+            user = User.query.filter_by(username=username).first()
+            if user is None or not check_password_hash(user.password, password):
+                raise ValueError("Incorrect Username or Password")
+            session["user_id"] = user.id
+            session["username"] = user.username
+            return redirect(url_for("dashboard"))
         except ValueError as e:
             error=str(e)
     return render_template('log_in.html',title='Log in',error=error)
 
 
-@app.route('/dashboard')
+@app.route("/dashboard")
+@login_required
 def dashboard():
-    username=session['username']
-    tasks=s.get_tasks(username)
-    return render_template('dashboard.html',title='Dashboard',tasks=tasks)
+    sort = request.args.get("sort", "date")
 
+    query = Task.query.filter_by(user_id=session["user_id"])
 
+    if sort == "priority":
+
+        query = query.order_by(
+            case(
+                (Task.priority == "High", 1),
+                (Task.priority == "Medium", 2),
+                (Task.priority == "Low", 3),
+            )
+        )
+
+    elif sort == "name":
+
+        query = query.order_by(Task.title)
+
+    else:
+
+        query = query.order_by(Task.due_date)
+
+    tasks = query.all()
+
+    return render_template("dashboard.html",title="Dashboard",tasks=tasks)
 @app.route("/add", methods=["GET", "POST"])
+@login_required
 def add_task():
-
     if request.method == "POST":
 
         task = request.form["task"]
         priority = request.form["priority"]
         due_date = request.form["due_date"]
-
-        s.add(
-            session["username"],
-            task,
-            priority,
-            # due_date
-        )
-
+        user_id=session["user_id"]
+        if due_date:
+            due_date=date.fromisoformat(due_date)
+        else:
+            due_date=None
+        new_task = Task(title=task,priority=priority,due_date=due_date if due_date else None,user_id=user_id)
+        db.session.add(new_task)
+        db.session.commit()
         return redirect(url_for("dashboard"))
 
     return render_template("add_task.html")
 
+@app.route('/edit/<int:task_id>', methods=['GET','POST'])
+@login_required
+def edit_task(task_id):
+    task=Task.query.filter_by(id=task_id,user_id=session["user_id"]).first_or_404()
+    if request.method=="POST":
+        task.title=request.form["task"]
+        task.priority=request.form['priority']
+        due_date=request.form['due_date']
+        if due_date:
+            from datetime import date
+            task.due_date = date.fromisoformat(due_date)
+        else:
+            task.due_date = None
+        db.session.commit()
+        return redirect(url_for("dashboard"))
+    return render_template("edit_task.html", task=task)
 
-@app.route('/delete/<task_id>')
-def delete(task_id):
-    username=session['username']
-    s.delete(username,task_id)
+
+@app.route('/delete/<int:task_id>')
+@login_required
+def delete_task(task_id):
+    task=Task.query.filter_by(id=task_id,user_id=session["user_id"]).first_or_404()
+    db.session.delete(task)
+    db.session.commit()
     return redirect(url_for("dashboard"))
+
+@app.route("/logout")
+def logout():
+    if "user_id" not in session:
+         return redirect(url_for("log_in"))
+    session.clear()
+
+    return redirect(url_for("home"))
 if __name__ == "__main__":
     app.run(debug=True)
+    # with app.app_context():
+    #     db.create_all()

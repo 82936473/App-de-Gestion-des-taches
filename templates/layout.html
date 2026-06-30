@@ -29,6 +29,7 @@
         {% block nav %}
             <nav class="navigation">
                 <a href="{{ url_for('home') }}">Home</a>
+                <a href="{{ url_for('dashboard') }}">Dashboard</a>
                 <a href="#">ℹ️ About</a>
             </nav>
         {% endblock nav %}
@@ -40,7 +41,7 @@
                 
                 <a href="#">🤖 AI Chat</a>
 
-                <a href="#">🚪 Sign out</a>
+                <a href="{{url_for('logout')}}">🚪 Log out</a>
 
             </aside>
         {% endblock sidebar%}
