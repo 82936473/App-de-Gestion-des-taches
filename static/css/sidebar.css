@@ -3,13 +3,13 @@
     position:sticky;
     top:10px;
 
-    width:250px;
+    width:95px;
     height:calc(100vh - 20px);
 
     margin:10px;
     padding:10px;
 
-    background:rgba(160,156,156,.15);
+    background:#00000033;
     border-radius:16px;
     border-right:1px solid #ddd;
 
@@ -19,9 +19,25 @@
     flex-shrink:0;
 }
 
-.sidebar.collapsed{
-    width:75px;
+@media (hover:hover){
+    .sidebar:hover{
+        width:250px;
+    }
 }
+.sidebar span{ display:none; }
+@media (hover: hover){
+
+    .sidebar:hover span{display:inline;}
+
+}
+.sidebar.open span{
+    display:inline;
+}
+
+.sidebar.open{
+    width:250px;
+}
+
 
 .sidebar ul{
     list-style:none;
@@ -38,17 +54,14 @@
 #toggle-btn{
     width:45px;
     height:45px;
-
     border:none;
     background:none;
-
     border-radius:12px;
-
     cursor:pointer;
-
     display:flex;
     justify-content:center;
     align-items:center;
+    margin-right:10px;
 }
 
 #toggle-btn:hover{
@@ -82,7 +95,7 @@
     }
 }
 
-.sidebar .active{
+.sidebar_dash-dashboard,.sidebar_add-add_task,.sidebar_comp-completed_tasks{
     background:#e8f3ff;
     font-weight:bold;
 }

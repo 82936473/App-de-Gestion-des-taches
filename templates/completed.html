@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/completed.css') }}">   
+{% endblock head %}
+{% block content %}
+<div class="dashboard">
+    {% block sidebar %} {{ super()}} {% endblock sidebar %}
+    <main class="content">
+        {% if tasks %}
+            <div class="toolbar">
+                <h3>Completed Tasks</h3>
+            </div>
+            {% for task in tasks %}
+
+            <div class="task-card" id="{{ task.priority|lower }}">
+
+                <div class="card-header">
+
+                    <div>
+                        {% if task.due_date %}
+                             <p><strong>Due date:</strong> {{ task.due_date }}</p>
+                        {% endif %}
+                        <p><strong>Completed</strong></p>
+
+                    </div>
+
+                    <div class="dropdown">
+
+                        <button class="menuu">⋮</button>
+
+                        <div class="dropdown-content">
+                            <a href="{{ url_for('delete_task', task_id=task.id, source='completed_source') }}""><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-8₀v36₀Zm16₀ ₀h8₀v-36₀h-8₀v36₀ZM28₀-7₂₀v5₂₀-5₂₀Z"/></svg><span>Delete</span></a>                        
+                        </div>
+
+                    </div>
+
+                </div>
+                <hr>
+                <div class="task-title">
+                    <p> {{ task.title }} </p>
+                </div>
+            </div>
+
+            {% endfor %}
+        {% else %}
+                    <h1 style="text-align: center;">No Completed Tasks</h1> 
+        {% endif %}  
+    </main>
+
+</div>
+
+<script>
+const buttons = document.querySelectorAll(".menuu");
+
+buttons.forEach(button => {
+
+    button.addEventListener("click", function (event) {
+
+        // Prevent the click from reaching the document
+        event.stopPropagation();
+
+        // Close all other dropdowns
+        document.querySelectorAll(".dropdown-content").forEach(menuu => {
+            if (menuu !== this.nextElementSibling) {
+                menuu.style.display = "none";
+            }
+        });
+
+        // Toggle this dropdown
+        const menuu = this.nextElementSibling;
+
+        if (menuu.style.display === "block")
+            menuu.style.display = "none";
+        else
+            menuu.style.display = "block";
+
+    });
+
+});
+
+// Close all dropdowns when clicking anywhere else
+document.addEventListener("click", function () {
+
+    document.querySelectorAll(".dropdown-content").forEach(menuu => {
+        menuu.style.display = "none";
+    });
+
+});
+</script>
+{% block sidebar_script %} {{super()}} {% endblock %}
+{% endblock %}

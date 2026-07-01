@@ -20,6 +20,7 @@
 
 .task-card{
     width:90%;
+    background-color:#00000033;
     max-width:900px;
     border-radius:18px;
     padding:25px 35px;
@@ -38,26 +39,6 @@
     fill:currentColor;
 }
 
-#high{
-    background:#ff7777;
-}
-#high .dropdown-content{
-    background: #ff6b6b63;
-}
-#medium{
-    background:#ffbf48;
-    color:black;
- }
-#medium .dropdown-content{
-    background:#fdc55d73;
-    color:black;
-}
-#low, #low .dropdown-content{
-    background:#4af591;
-}
-#low .dropdown-content{
-    background:#4cff9765;
-}
 
 .task-card:hover{
     transform:translateY(-8px);
@@ -86,13 +67,6 @@
 .task-card h2{
     margin:0;
     font-size:36px;
-}
-
-.priority{
-    padding:8px 18px;
-    border-radius:30px;
-    color:white;
-    font-weight:bold;
 }
 
 
