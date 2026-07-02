@@ -5,6 +5,17 @@
 {% block content %}
 <div class="dashboard">
     {% block sidebar %} {{ super()}} {% endblock sidebar %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+             <div class="flash-container">
+                {% for category, message in messages %}
+                    <div style="color:black;" class="flash {{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+             </div>
+        {% endif %}
+    {% endwith %}
     <main class="content">
         {% if tasks %}
             <div class="toolbar">
@@ -29,7 +40,7 @@
                         <button class="menuu">⋮</button>
 
                         <div class="dropdown-content">
-                            <a href="{{ url_for('delete_task', task_id=task.id, source='completed_source') }}""><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-8₀v36₀Zm16₀ ₀h8₀v-36₀h-8₀v36₀ZM28₀-7₂₀v5₂₀-5₂₀Z"/></svg><span>Delete</span></a>                        
+                            <a href="{{ url_for('delete_task', task_id=task.id, source='completed_source',status='None') }}""><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e3e3e3"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-8₀v36₀Zm16₀ ₀h8₀v-36₀h-8₀v36₀ZM28₀-7₂₀v5₂₀-5₂₀Z"/></svg><span>Delete</span></a>                        
                         </div>
 
                     </div>

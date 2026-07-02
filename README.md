@@ -67,15 +67,15 @@ python main.py
 
 ## Future improvements
 * AI task assistant.
-* Task completion.
+* Task completion. Done
 * Add notifications.
 * multiple languages
 * Dark mode.
-* More reactif componenets.
+* More reactif componenets. Done
 
 --------------
 ## Live Demo
-Not Available for now
+[text](https://horizons-ai-production.up.railway.app/)
 
 --------------
 
